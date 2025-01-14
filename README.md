@@ -1,10 +1,34 @@
-# Liste2Film
-Projet pour mon école qui consiste à utiliser l'api TMDB pour que l'utilisateur puisse:
+# Hello World
 
-1. Offrir une fonctionnalité de recherche qui permet de trouver des films par titre
+## Installation
 
-2. Présenter des détails de base sur chaque film, tels que le résumé, le genre, la date de sortie, et l'évaluation.
+Use the package manager [npm](https://www.npmjs.com/) to install helloworld.
 
-3. Permettre aux utilisateurs d'ajouter des films à des listes personnalisées qu'ils peuvent consulter à tout moment.
+Use node v20 use :
+```bash
+nvm install 20
+```
 
-4. Permettre à l’utilisateur de préciser les films qu’il a déjà vu
+```bash
+npm i
+```
+
+## Usage
+
+Start the application dev with :
+
+```bash
+npm run start
+```
+
+Created the dist with :
+
+```bash
+npm run dist
+```
+
+Analyse the coding rules with :
+
+```bash
+npm run lint
+```
