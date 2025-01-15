@@ -1,8 +1,7 @@
-import TodoController from './Controller/todo-controller';
+import ListController from './Controller/list-controller';
 
 import './index.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
-  new TodoController();
+  new ListController();
 });
-
