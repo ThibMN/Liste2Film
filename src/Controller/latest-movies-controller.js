@@ -51,9 +51,9 @@ class LatestMoviesController {
       };
       this.listModel.setCurrentWatchlist(watchlistName);
       this.listModel.addToList(film);
-      alert(`${movie.title} has been added to your watchlist "${watchlistName}".`);
+      this.view.displayNotification(`${movie.title} has been added to your watchlist "${watchlistName}".`);
     } else {
-      alert('Movie not found.');
+      this.view.displayError('Movie not found.');
     }
   }
 
