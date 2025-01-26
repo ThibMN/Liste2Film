@@ -6,7 +6,8 @@ class ListView {
     onDeleteFilm,
     onSearchMovies,
     onCreateWatchlist,
-    onSelectWatchlist
+    onSelectWatchlist,
+    onAddReview
   ) {
     this.onSearch = onSearch;
     this.onAddToList = onAddToList;
@@ -15,6 +16,7 @@ class ListView {
     this.onSearchMovies = onSearchMovies;
     this.onCreateWatchlist = onCreateWatchlist;
     this.onSelectWatchlist = onSelectWatchlist;
+    this.onAddReview = onAddReview;
   }
 
   renderPage(watchlists, currentWatchlist) {
@@ -183,6 +185,11 @@ class ListView {
               <div class="fw-bold">${film.title}</div>
               <p>${film.description}</p>
               <small>Genre: ${film.genre} | Release Date: ${film.releaseDate}</small>
+              <p><strong>Review:</strong> ${film.review || 'No review yet'}</p>
+              <p><strong>Rating:</strong> ${film.rating || 'Not rated yet'}/10</p>
+              <textarea class="form-control mb-2 review-input" placeholder="Add a review...">${film.review || ''}</textarea>
+              <input type="number" class="form-control mb-2 rating-input" placeholder="Rating out of 10" value="${film.rating || ''}" min="0" max="10">
+              <button class="btn btn-sm btn-primary save-review-btn">Save Review</button>
             </div>
             <div>
               <button class="btn btn-sm btn-success watch-btn me-2">${film.watched ? 'Unmark' : 'Watched'}</button>
@@ -226,6 +233,13 @@ class ListView {
     this.filmList.querySelectorAll('.delete-btn').forEach((btn) => btn.addEventListener('click', (e) => {
       const id = parseInt(e.target.closest('.list-group-item').dataset.id, 10);
       this.onDeleteFilm(id);
+    }));
+
+    this.filmList.querySelectorAll('.save-review-btn').forEach((btn) => btn.addEventListener('click', (e) => {
+      const id = parseInt(e.target.closest('.list-group-item').dataset.id, 10);
+      const review = e.target.closest('.list-group-item').querySelector('.review-input').value.trim();
+      const rating = parseInt(e.target.closest('.list-group-item').querySelector('.rating-input').value, 10);
+      this.onAddReview(id, review, rating);
     }));
   }
 

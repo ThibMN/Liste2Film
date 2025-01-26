@@ -1,5 +1,3 @@
-// src/Model/list-model.js
-
 class ListModel {
   constructor() {
     this.watchlists = JSON.parse(localStorage.getItem('watchlists')) || {};
@@ -49,7 +47,9 @@ class ListModel {
     const newFilm = {
       id: Date.now(),
       ...film,
-      watched: false
+      watched: false,
+      review: '',
+      rating: 0
     };
     this.watchlists[this.currentWatchlist].push(newFilm);
     this.saveWatchlists();
@@ -65,6 +65,13 @@ class ListModel {
   deleteFilm(id) {
     this.watchlists[this.currentWatchlist] = this.watchlists[this.currentWatchlist]
       .filter((film) => film.id !== id);
+    this.saveWatchlists();
+  }
+
+  addReview(id, review, rating) {
+    this.watchlists[this.currentWatchlist] = this.watchlists[this.currentWatchlist].map((film) => (
+      film.id === id ? { ...film, review, rating } : film
+    ));
     this.saveWatchlists();
   }
 

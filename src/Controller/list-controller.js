@@ -13,7 +13,8 @@ class ListController {
       this.handleDeleteFilm.bind(this),
       this.handleSearchMovies.bind(this),
       this.handleCreateWatchlist.bind(this),
-      this.handleSelectWatchlist.bind(this)
+      this.handleSelectWatchlist.bind(this),
+      this.handleAddReview.bind(this)
     );
 
     this.init();
@@ -75,6 +76,11 @@ class ListController {
   handleSelectWatchlist(name) {
     this.model.setCurrentWatchlist(name);
     this.view.renderPage(this.model.getWatchlists(), this.model.getCurrentWatchlist());
+    this.view.displayFilms(this.model.getFilms());
+  }
+
+  handleAddReview(id, review, rating) {
+    this.model.addReview(id, review, rating);
     this.view.displayFilms(this.model.getFilms());
   }
 }
