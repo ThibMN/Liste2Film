@@ -7,7 +7,12 @@ class LatestMoviesController {
     const container = document.getElementById('app');
     this.model = new LatestMoviesModel();
     this.listModel = new ListModel();
-    this.view = new LatestMoviesView(container, this.handleAddToWatchlist.bind(this), this.handleLoadMore.bind(this));
+    this.view = new LatestMoviesView(
+      container,
+      this.handleAddToWatchlist.bind(this),
+      this.handleLoadMore.bind(this),
+      this.getWatchlists.bind(this)
+    );
     this.page = 1;
 
     this.init();
@@ -33,7 +38,7 @@ class LatestMoviesController {
     }
   }
 
-  handleAddToWatchlist(movieId) {
+  handleAddToWatchlist(movieId, watchlistName) {
     const movie = this.model.getMovieById(movieId);
     if (movie) {
       const film = {
@@ -44,11 +49,16 @@ class LatestMoviesController {
         genre: movie.genre,
         watched: false
       };
+      this.listModel.setCurrentWatchlist(watchlistName);
       this.listModel.addToList(film);
-      alert(`${movie.title} has been added to your watchlist.`);
+      alert(`${movie.title} has been added to your watchlist "${watchlistName}".`);
     } else {
       alert('Movie not found.');
     }
+  }
+
+  getWatchlists() {
+    return this.listModel.getWatchlists();
   }
 }
 

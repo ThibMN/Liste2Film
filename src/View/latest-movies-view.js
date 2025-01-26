@@ -1,8 +1,9 @@
 class LatestMoviesView {
-  constructor(container, onAddToWatchlist, onLoadMore) {
+  constructor(container, onAddToWatchlist, onLoadMore, getWatchlists) {
     this.container = container;
     this.onAddToWatchlist = onAddToWatchlist;
     this.onLoadMore = onLoadMore;
+    this.getWatchlists = getWatchlists;
   }
 
   renderPage() {
@@ -50,8 +51,47 @@ class LatestMoviesView {
   attachAddToWatchlistEventListeners() {
     this.moviesContainer.querySelectorAll('.add-to-watchlist-btn').forEach((btn) => btn.addEventListener('click', (e) => {
       const id = parseInt(e.target.dataset.id, 10);
-      this.onAddToWatchlist(id);
+      this.showWatchlistSelection(id);
     }));
+  }
+
+  showWatchlistSelection(movieId) {
+    const watchlists = this.getWatchlists();
+    const watchlistOptions = watchlists.map((watchlist) => `<option value="${watchlist}">${watchlist}</option>`).join('');
+    const modalHtml = `
+      <div class="modal" tabindex="-1" role="dialog" id="watchlistModal">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Select Watchlist</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <select id="watchlist-select" class="form-control">
+                ${watchlistOptions}
+              </select>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="confirm-add-btn">Add</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = document.getElementById('watchlistModal');
+    const confirmAddBtn = modal.querySelector('#confirm-add-btn');
+    confirmAddBtn.addEventListener('click', () => {
+      const selectedWatchlist = modal.querySelector('#watchlist-select').value;
+      this.onAddToWatchlist(movieId, selectedWatchlist);
+      modal.remove();
+    });
+    modal.style.display = 'block';
+    modal.querySelector('.close').addEventListener('click', () => modal.remove());
+    modal.querySelector('.btn-secondary').addEventListener('click', () => modal.remove());
   }
 
   attachLoadMoreEventListener() {
