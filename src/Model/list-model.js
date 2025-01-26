@@ -10,10 +10,18 @@ class ListModel {
   }
 
   searchFilms(query) {
-    return this.films.filter((film) => film.title.toLowerCase().includes(query.toLowerCase()));
+    return this.films.filter((film) => film.title && (
+      film.title.toLowerCase().includes(query.toLowerCase())
+      || film.genre.toLowerCase().includes(query.toLowerCase())
+      || film.releaseDate.includes(query)
+    ));
   }
 
   addToList(film) {
+    if (!film.title || !film.description || !film.releaseDate || !film.genre) {
+      throw new Error('Film object is missing required properties');
+    }
+
     const newFilm = {
       id: Date.now(),
       ...film,
@@ -24,7 +32,14 @@ class ListModel {
   }
 
   markAsWatched(id) {
-    this.films = this.films.map((film) => (film.id === id ? { ...film, watched: !film.watched } : film));
+    this.films = this.films.map((film) => (
+      film.id === id ? { ...film, watched: !film.watched } : film
+    ));
+    this.saveFilms();
+  }
+
+  deleteFilm(id) {
+    this.films = this.films.filter((film) => film.id !== id);
     this.saveFilms();
   }
 

@@ -1,5 +1,3 @@
-import ListController from './Controller/list-controller';
-import LatestMoviesController from './Controller/latest-movies-controller';
 import ControllerError404 from './Controller/error-404';
 
 const Router = class Router {

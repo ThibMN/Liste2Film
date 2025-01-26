@@ -4,10 +4,6 @@ import LatestMoviesController from './Controller/latest-movies-controller';
 
 import './index.scss';
 
-document.addEventListener('DOMContentLoaded', () => {
-  new ListController();
-});
-
 const routes = [
   {
     url: '/',
@@ -19,4 +15,6 @@ const routes = [
   }
 ];
 
-new Router(routes);
+document.addEventListener('DOMContentLoaded', () => {
+  new Router(routes);
+});
