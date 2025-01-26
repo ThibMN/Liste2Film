@@ -2,15 +2,39 @@
 
 class ListModel {
   constructor() {
-    this.films = JSON.parse(localStorage.getItem('films')) || [];
+    this.watchlists = JSON.parse(localStorage.getItem('watchlists')) || {};
+    this.currentWatchlist = localStorage.getItem('currentWatchlist') || 'Default';
+    if (!this.watchlists[this.currentWatchlist]) {
+      this.watchlists[this.currentWatchlist] = [];
+    }
+  }
+
+  getWatchlists() {
+    return Object.keys(this.watchlists);
+  }
+
+  getCurrentWatchlist() {
+    return this.currentWatchlist;
+  }
+
+  setCurrentWatchlist(name) {
+    this.currentWatchlist = name;
+    localStorage.setItem('currentWatchlist', name);
+  }
+
+  createWatchlist(name) {
+    if (!this.watchlists[name]) {
+      this.watchlists[name] = [];
+      this.saveWatchlists();
+    }
   }
 
   getFilms() {
-    return this.films;
+    return this.watchlists[this.currentWatchlist] || [];
   }
 
   searchFilms(query) {
-    return this.films.filter((film) => film.title && (
+    return this.getFilms().filter((film) => film.title && (
       film.title.toLowerCase().includes(query.toLowerCase())
       || film.genre.toLowerCase().includes(query.toLowerCase())
       || film.releaseDate.includes(query)
@@ -27,24 +51,25 @@ class ListModel {
       ...film,
       watched: false
     };
-    this.films.push(newFilm);
-    this.saveFilms();
+    this.watchlists[this.currentWatchlist].push(newFilm);
+    this.saveWatchlists();
   }
 
   markAsWatched(id) {
-    this.films = this.films.map((film) => (
+    this.watchlists[this.currentWatchlist] = this.watchlists[this.currentWatchlist].map((film) => (
       film.id === id ? { ...film, watched: !film.watched } : film
     ));
-    this.saveFilms();
+    this.saveWatchlists();
   }
 
   deleteFilm(id) {
-    this.films = this.films.filter((film) => film.id !== id);
-    this.saveFilms();
+    this.watchlists[this.currentWatchlist] = this.watchlists[this.currentWatchlist]
+      .filter((film) => film.id !== id);
+    this.saveWatchlists();
   }
 
-  saveFilms() {
-    localStorage.setItem('films', JSON.stringify(this.films));
+  saveWatchlists() {
+    localStorage.setItem('watchlists', JSON.stringify(this.watchlists));
   }
 }
 

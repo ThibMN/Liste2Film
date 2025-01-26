@@ -1,13 +1,23 @@
 class ListView {
-  constructor(onSearch, onAddToList, onMarkAsWatched, onDeleteFilm, onSearchMovies) {
+  constructor(
+    onSearch,
+    onAddToList,
+    onMarkAsWatched,
+    onDeleteFilm,
+    onSearchMovies,
+    onCreateWatchlist,
+    onSelectWatchlist
+  ) {
     this.onSearch = onSearch;
     this.onAddToList = onAddToList;
     this.onMarkAsWatched = onMarkAsWatched;
     this.onDeleteFilm = onDeleteFilm;
     this.onSearchMovies = onSearchMovies;
+    this.onCreateWatchlist = onCreateWatchlist;
+    this.onSelectWatchlist = onSelectWatchlist;
   }
 
-  renderPage() {
+  renderPage(watchlists, currentWatchlist) {
     const container = document.getElementById('app');
     container.innerHTML = `
       <div class="container mt-5">
@@ -30,6 +40,20 @@ class ListView {
               </div>
             </nav>
             <h1 class="text-center mb-4">Film List</h1>
+            <div class="mb-3">
+              <select id="watchlist-select" class="form-select">
+                ${watchlists.map((watchlist) => `<option value="${watchlist}" ${watchlist === currentWatchlist ? 'selected' : ''}>${watchlist}</option>`).join('')}
+              </select>
+            </div>
+            <div class="mb-3">
+              <input
+                type="text"
+                id="new-watchlist-name"
+                class="form-control"
+                placeholder="New watchlist name"
+              />
+              <button id="create-watchlist-btn" class="btn btn-primary mt-2">Create Watchlist</button>
+            </div>
             <div class="mb-3">
               <input
                 type="text"
@@ -93,6 +117,9 @@ class ListView {
     this.addForm = document.querySelector('#add-form');
     this.searchMoviesInput = document.querySelector('#search-movies-bar');
     this.searchResults = document.querySelector('#search-results');
+    this.watchlistSelect = document.querySelector('#watchlist-select');
+    this.newWatchlistName = document.querySelector('#new-watchlist-name');
+    this.createWatchlistBtn = document.querySelector('#create-watchlist-btn');
 
     if (
       this.searchInput
@@ -100,6 +127,9 @@ class ListView {
       && this.filmList
       && this.searchMoviesInput
       && this.searchResults
+      && this.watchlistSelect
+      && this.newWatchlistName
+      && this.createWatchlistBtn
     ) {
       this.attachEventListeners();
     } else {
@@ -129,6 +159,18 @@ class ListView {
 
     this.searchMoviesInput.addEventListener('input', (e) => {
       this.onSearchMovies(e.target.value);
+    });
+
+    this.createWatchlistBtn.addEventListener('click', () => {
+      const name = this.newWatchlistName.value.trim();
+      if (name) {
+        this.onCreateWatchlist(name);
+        this.newWatchlistName.value = '';
+      }
+    });
+
+    this.watchlistSelect.addEventListener('change', (e) => {
+      this.onSelectWatchlist(e.target.value);
     });
   }
 

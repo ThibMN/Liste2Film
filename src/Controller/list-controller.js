@@ -11,14 +11,16 @@ class ListController {
       this.handleAddToList.bind(this),
       this.handleMarkAsWatched.bind(this),
       this.handleDeleteFilm.bind(this),
-      this.handleSearchMovies.bind(this)
+      this.handleSearchMovies.bind(this),
+      this.handleCreateWatchlist.bind(this),
+      this.handleSelectWatchlist.bind(this)
     );
 
     this.init();
   }
 
   init() {
-    this.view.renderPage();
+    this.view.renderPage(this.model.getWatchlists(), this.model.getCurrentWatchlist());
     this.view.displayFilms(this.model.getFilms());
   }
 
@@ -62,6 +64,18 @@ class ListController {
     } catch (error) {
       this.view.displayError('Error fetching movies. Please try again later.');
     }
+  }
+
+  handleCreateWatchlist(name) {
+    this.model.createWatchlist(name);
+    this.view.renderPage(this.model.getWatchlists(), this.model.getCurrentWatchlist());
+    this.view.displayFilms(this.model.getFilms());
+  }
+
+  handleSelectWatchlist(name) {
+    this.model.setCurrentWatchlist(name);
+    this.view.renderPage(this.model.getWatchlists(), this.model.getCurrentWatchlist());
+    this.view.displayFilms(this.model.getFilms());
   }
 }
 
