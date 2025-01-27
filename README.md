@@ -19,7 +19,7 @@ A modern web application to manage your movie watchlists. Search for movies, cre
 
 ### Prerequisites
 
-* Node.js v20 or higher
+* Node.js v20
 * A TMDB account for API token
 
 ### Installing Node.js v20
