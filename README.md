@@ -9,6 +9,11 @@ A modern web application to manage your movie watchlists. Search for movies, cre
 * **Rate and review watched movies** to keep track of your impressions
 * **Track movies** watched and to watch so you don't miss anything
 * **Modern dark interface** for a pleasant user experience
+* **Import/Export watchlists** to share or backup your movie collections
+* **Delete watchlists** to keep your lists organized (except default watchlist)
+* **Enhanced movie details** including release dates and genres
+* **Real-time search** within your watchlists
+* **Local storage** for persistent data across sessions
 
 ## 🚀 Installation
 
