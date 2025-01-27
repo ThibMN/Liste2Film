@@ -1,4 +1,15 @@
 class ListView {
+  /**
+   * Initialize the ListView with all necessary event handlers
+   * @param {Function} onSearch - Handler for searching films in watchlist
+   * @param {Function} onAddToList - Handler for adding a new film to watchlist
+   * @param {Function} onMarkAsWatched - Handler for marking a film as watched
+   * @param {Function} onDeleteFilm - Handler for deleting a film from watchlist
+   * @param {Function} onSearchMovies - Handler for searching movies from TMDB API
+   * @param {Function} onCreateWatchlist - Handler for creating a new watchlist
+   * @param {Function} onSelectWatchlist - Handler for selecting a different watchlist
+   * @param {Function} onAddReview - Handler for adding a review to a film
+   */
   constructor(
     onSearch,
     onAddToList,
@@ -19,6 +30,11 @@ class ListView {
     this.onAddReview = onAddReview;
   }
 
+  /**
+   * Render the main page with watchlist selector and all forms
+   * @param {string[]} watchlists - Array of available watchlist names
+   * @param {string} currentWatchlist - Currently selected watchlist name
+   */
   renderPage(watchlists, currentWatchlist) {
     const container = document.getElementById('app');
     container.innerHTML = `
@@ -26,7 +42,7 @@ class ListView {
         <div class="row">
           <div class="col-md-8 offset-md-2">
             <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-              <a class="navbar-brand" href="#">Film List</a>
+              <a class="navbar-brand" href="#">Liste2Films</a>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
@@ -41,7 +57,7 @@ class ListView {
                 </ul>
               </div>
             </nav>
-            <h1 class="text-center mb-4">Film List</h1>
+            <h1 class="text-center mb-4">Liste2Films</h1>
             <div class="mb-3">
               <select id="watchlist-select" class="form-select">
                 ${watchlists.map((watchlist) => `<option value="${watchlist}" ${watchlist === currentWatchlist ? 'selected' : ''}>${watchlist}</option>`).join('')}
@@ -61,7 +77,7 @@ class ListView {
                 type="text"
                 id="search-movies-bar"
                 class="form-control"
-                placeholder="Search movies to add to watchlist..."
+                placeholder="Search filmes to add to watchlist"
               />
             </div>
             <form id="add-form" class="mb-4">
@@ -104,7 +120,7 @@ class ListView {
                 type="text"
                 id="search-bar"
                 class="form-control"
-                placeholder="Search films..."
+                placeholder="Search films in watchlist"
               />
             </div>
             <div id="film-list" class="list-group"></div>
@@ -139,6 +155,10 @@ class ListView {
     }
   }
 
+  /**
+   * Attach all event listeners to the page elements
+   * Including search, form submission, movie search, and watchlist management
+   */
   attachEventListeners() {
     this.searchInput.addEventListener('input', (e) => {
       this.onSearch(e.target.value);
@@ -176,6 +196,10 @@ class ListView {
     });
   }
 
+  /**
+   * Display the list of films in the current watchlist
+   * @param {Array} films - Array of film objects to display
+   */
   displayFilms(films) {
     this.filmList.innerHTML = films
       .map(
@@ -203,6 +227,10 @@ class ListView {
     this.attachFilmEventListeners();
   }
 
+  /**
+   * Display search results from TMDB API
+   * @param {Array} movies - Array of movie objects from TMDB API
+   */
   displaySearchResults(movies) {
     this.searchResults.innerHTML = movies
       .map(
@@ -224,6 +252,10 @@ class ListView {
     this.attachAddToWatchlistEventListeners();
   }
 
+  /**
+   * Attach event listeners to the Liste2Films items
+   * Including watched toggle, delete, and review functionality
+   */
   attachFilmEventListeners() {
     this.filmList.querySelectorAll('.watch-btn').forEach((btn) => btn.addEventListener('click', (e) => {
       const id = parseInt(e.target.closest('.list-group-item').dataset.id, 10);
@@ -243,6 +275,10 @@ class ListView {
     }));
   }
 
+  /**
+   * Attach event listeners to the add to watchlist buttons in search results
+   * Allows adding movies from search results to the current watchlist
+   */
   attachAddToWatchlistEventListeners() {
     this.searchResults.querySelectorAll('.add-to-watchlist-btn').forEach((btn) => btn.addEventListener('click', (e) => {
       const id = parseInt(e.target.closest('.list-group-item').dataset.id, 10);

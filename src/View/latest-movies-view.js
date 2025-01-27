@@ -1,4 +1,15 @@
+/**
+ * View handling the display of latest movies from TMDB API
+ * Manages the UI for browsing and adding movies to watchlists
+ */
 class LatestMoviesView {
+  /**
+   * Initialize the view with necessary handlers
+   * @param {HTMLElement} container - Main container element
+   * @param {Function} onAddToWatchlist - Handler for adding movies to watchlist
+   * @param {Function} onLoadMore - Handler for loading more movies
+   * @param {Function} getWatchlists - Function to get available watchlists
+   */
   constructor(container, onAddToWatchlist, onLoadMore, getWatchlists) {
     this.container = container;
     this.onAddToWatchlist = onAddToWatchlist;
@@ -6,8 +17,63 @@ class LatestMoviesView {
     this.getWatchlists = getWatchlists;
   }
 
+  /**
+   * Render the main page layout with styling
+   * Sets up the container with necessary HTML and CSS
+   * Creates the movie grid and load more button
+   */
   renderPage() {
     this.container.innerHTML = `
+        <style>
+          body {
+            background-color: #1e272e;
+            color: white;
+          }
+          .card {
+            background-color: #485460;
+            border: none;
+          }
+          .btn-primary {
+            background-color: #3c40c6;
+            border-color: #3c40c6;
+          }
+          .btn-primary:hover {
+            background-color: #575fcf;
+            border-color: #575fcf;
+          }
+          .btn-secondary {
+            background-color: #485460;
+            border-color: #485460;
+          }
+          .btn-secondary:hover {
+            background-color: #1e272e;
+            border-color: #1e272e;
+          }
+          .modal-content {
+            background-color: #485460;
+            color: white;
+          }
+          .form-control {
+            background-color: #1e272e;
+            border-color: #575fcf;
+            color: white;
+          }
+          .form-control:focus {
+            background-color: #1e272e;
+            border-color: #3c40c6;
+            color: white;
+            box-shadow: 0 0 0 0.2rem rgba(60, 64, 198, 0.25);
+          }
+          .modal-header {
+            border-bottom: 1px solid #575fcf;
+          }
+          .modal-footer {
+            border-top: 1px solid #575fcf;
+          }
+          .text-muted {
+            color: #adb5bd !important;
+          }
+        </style>
         <div class="container mt-5">
           <div class="d-flex justify-content-between mb-4">
             <h1 class="text-center">Latest Movies</h1>
@@ -24,6 +90,11 @@ class LatestMoviesView {
     this.attachLoadMoreEventListener();
   }
 
+  /**
+   * Display a list of movies in the grid layout
+   * Appends new movies to the existing display
+   * @param {Array} movies - Array of movie objects to display
+   */
   displayMovies(movies) {
     this.moviesContainer.innerHTML += movies
       .map(
@@ -48,6 +119,10 @@ class LatestMoviesView {
     this.attachAddToWatchlistEventListeners();
   }
 
+  /**
+   * Attach event listeners to all "Add to Watchlist" buttons
+   * Triggers the watchlist selection modal when clicked
+   */
   attachAddToWatchlistEventListeners() {
     this.moviesContainer.querySelectorAll('.add-to-watchlist-btn').forEach((btn) => btn.addEventListener('click', (e) => {
       const id = parseInt(e.target.dataset.id, 10);
@@ -55,6 +130,11 @@ class LatestMoviesView {
     }));
   }
 
+  /**
+   * Display a modal for selecting which watchlist to add the movie to
+   * Creates a temporary modal element with watchlist options
+   * @param {number} movieId - ID of the movie to be added to a watchlist
+   */
   showWatchlistSelection(movieId) {
     const watchlists = this.getWatchlists();
     const watchlistOptions = watchlists.map((watchlist) => `<option value="${watchlist}">${watchlist}</option>`).join('');
@@ -94,18 +174,40 @@ class LatestMoviesView {
     modal.querySelector('.btn-secondary').addEventListener('click', () => modal.remove());
   }
 
+  /**
+   * Attach event listener to the "Load More" button
+   * Triggers the loading of the next page of movies when clicked
+   */
   attachLoadMoreEventListener() {
     this.loadMoreBtn.addEventListener('click', () => {
       this.onLoadMore();
     });
   }
 
+  /**
+   * Display an error message to the user
+   * Replaces the movie grid with an error alert
+   * @param {string} message - Error message to display
+   */
   displayError(message) {
     this.moviesContainer.innerHTML = `
         <div class="alert alert-danger text-center" role="alert">
           ${message}
         </div>
       `;
+  }
+
+  /**
+   * Display a success notification to the user
+   * Shows a temporary message when a movie is added to a watchlist
+   * @param {string} message - Success message to display
+   */
+  displayNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'alert alert-success position-fixed top-0 end-0 m-3';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
   }
 }
 
