@@ -14,7 +14,10 @@ class ListController {
       this.handleSearchMovies.bind(this),
       this.handleCreateWatchlist.bind(this),
       this.handleSelectWatchlist.bind(this),
-      this.handleAddReview.bind(this)
+      this.handleAddReview.bind(this),
+      this.handleExportWatchlist.bind(this),
+      this.handleImportWatchlist.bind(this),
+      this.handleDeleteWatchlist.bind(this) // Ajout de cette ligne
     );
 
     this.init();
@@ -82,6 +85,46 @@ class ListController {
   handleAddReview(id, review, rating) {
     this.model.addReview(id, review, rating);
     this.view.displayFilms(this.model.getFilms());
+  }
+
+  /**
+   * Handle watchlist export request
+   * Gets watchlist data from model and triggers download
+   * @param {string} watchlistName - Name of watchlist to export
+   */
+  handleExportWatchlist(watchlistName) {
+    const watchlistData = this.model.exportWatchlist(watchlistName);
+    this.view.handleExportWatchlist(watchlistData);
+  }
+
+  /**
+   * Handle watchlist import request
+   * Validates and imports watchlist data
+   * @param {Object} watchlistData - Watchlist data to import
+   */
+  handleImportWatchlist(watchlistData) {
+    try {
+      this.model.importWatchlist(watchlistData);
+      this.view.renderPage(this.model.getWatchlists(), this.model.getCurrentWatchlist());
+      this.view.displayFilms(this.model.getFilms());
+    } catch (error) {
+      process.stdout(`Error importing watchlist: ${error.message}`);
+    }
+  }
+
+  /**
+   * Handle watchlist deletion request
+   * Deletes the specified watchlist and updates the view
+   * @param {string} watchlistName - Name of watchlist to delete
+   */
+  handleDeleteWatchlist(watchlistName) {
+    try {
+      this.model.deleteWatchlist(watchlistName);
+      this.view.renderPage(this.model.getWatchlists(), this.model.getCurrentWatchlist());
+      this.view.displayFilms(this.model.getFilms());
+    } catch (error) {
+      process.stdout(`Error deleting watchlist: ${error.message}`);
+    }
   }
 }
 

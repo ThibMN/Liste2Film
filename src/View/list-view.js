@@ -9,6 +9,9 @@ class ListView {
    * @param {Function} onCreateWatchlist - Handler for creating a new watchlist
    * @param {Function} onSelectWatchlist - Handler for selecting a different watchlist
    * @param {Function} onAddReview - Handler for adding a review to a film
+   * @param {Function} onExportWatchlist - Handler for exporting the current watchlist
+   * @param {Function} onImportWatchlist - Handler for importing a watchlist
+   * @param {Function} onDeleteWatchlist - Handler for deleting a watchlist
    */
   constructor(
     onSearch,
@@ -18,7 +21,10 @@ class ListView {
     onSearchMovies,
     onCreateWatchlist,
     onSelectWatchlist,
-    onAddReview
+    onAddReview,
+    onExportWatchlist,
+    onImportWatchlist,
+    onDeleteWatchlist
   ) {
     this.onSearch = onSearch;
     this.onAddToList = onAddToList;
@@ -28,6 +34,9 @@ class ListView {
     this.onCreateWatchlist = onCreateWatchlist;
     this.onSelectWatchlist = onSelectWatchlist;
     this.onAddReview = onAddReview;
+    this.onExportWatchlist = onExportWatchlist;
+    this.onImportWatchlist = onImportWatchlist;
+    this.onDeleteWatchlist = onDeleteWatchlist;
   }
 
   /**
@@ -62,6 +71,12 @@ class ListView {
               <select id="watchlist-select" class="form-select">
                 ${watchlists.map((watchlist) => `<option value="${watchlist}" ${watchlist === currentWatchlist ? 'selected' : ''}>${watchlist}</option>`).join('')}
               </select>
+              <div class="btn-group mt-2 w-100">
+                <button id="export-watchlist-btn" class="btn btn-secondary">Export Watchlist</button>
+                <input type="file" id="import-watchlist-input" class="d-none" accept=".json">
+                <button id="import-watchlist-btn" class="btn btn-secondary">Import Watchlist</button>
+                <button id="delete-watchlist-btn" class="btn btn-danger" ${currentWatchlist === 'Default' ? 'disabled' : ''}>Delete Watchlist</button>
+              </div>
             </div>
             <div class="mb-3">
               <input
@@ -194,6 +209,38 @@ class ListView {
     this.watchlistSelect.addEventListener('change', (e) => {
       this.onSelectWatchlist(e.target.value);
     });
+
+    const exportBtn = document.querySelector('#export-watchlist-btn');
+    const importBtn = document.querySelector('#import-watchlist-btn');
+    const importInput = document.querySelector('#import-watchlist-input');
+
+    exportBtn.addEventListener('click', () => {
+      const currentWatchlist = this.watchlistSelect.value;
+      this.onExportWatchlist(currentWatchlist);
+    });
+
+    importBtn.addEventListener('click', () => {
+      importInput.click();
+    });
+
+    importInput.addEventListener('change', async (e) => {
+      if (e.target.files.length > 0) {
+        try {
+          const watchlistData = await this.handleImportWatchlist(e.target.files[0]);
+          this.onImportWatchlist(watchlistData);
+        } catch (error) {
+          process.stdout(`Error importing watchlist: ${error.message}`);
+        }
+      }
+    });
+
+    const deleteBtn = document.querySelector('#delete-watchlist-btn');
+    deleteBtn.addEventListener('click', () => {
+      const currentWatchlist = this.watchlistSelect.value;
+      if (currentWatchlist !== 'Default') {
+        this.onDeleteWatchlist(currentWatchlist);
+      }
+    });
   }
 
   /**
@@ -291,6 +338,46 @@ class ListView {
         id, title, description, releaseDate, genre
       });
     }));
+  }
+
+  /**
+   * Handle watchlist export
+   * Creates and downloads a JSON file containing the current watchlist
+   * @param {Object} watchlistData - Current watchlist data to export
+   */
+  handleExportWatchlist(watchlistData) {
+    const dataStr = JSON.stringify(watchlistData);
+    const dataUri = `data:application/json;charset=utf-8,${encodeURIComponent(dataStr)}`;
+
+    const exportFileDefaultName = `watchlist-${Date.now()}.json`;
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  }
+
+  /**
+   * Handle watchlist import
+   * Reads and parses a JSON file containing a watchlist
+   * @param {File} file - JSON file to import
+   * @returns {Promise<Object>} Parsed watchlist data
+   */
+  async handleImportWatchlist(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        try {
+          const watchlistData = JSON.parse(e.target.result);
+          resolve(watchlistData);
+        } catch (error) {
+          reject(new Error('Invalid watchlist file format'));
+        }
+      };
+
+      reader.onerror = () => reject(new Error('Error reading file'));
+      reader.readAsText(file);
+    });
   }
 }
 

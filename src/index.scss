@@ -72,6 +72,46 @@ h1 {
 }
 
 /**
+ * Form control placeholder styling
+ * Light text for dark inputs
+ */
+.form-control::placeholder,
+.form-select::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+  opacity: 1;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.form-control::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.form-control:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.form-control::-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/**
+ * Number input specific styling
+ */
+.form-control[type="number"]::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/**
+ * Textarea specific styling
+ */
+textarea.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/**
  * Modal styling components
  * Dark themed modal with blue accents
  */

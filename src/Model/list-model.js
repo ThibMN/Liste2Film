@@ -53,6 +53,23 @@ class ListModel {
   }
 
   /**
+   * Delete a watchlist
+   * @param {string} name - Name of watchlist to delete
+   * @throws {Error} If trying to delete the default watchlist
+   */
+  deleteWatchlist(name) {
+    if (name === 'Default') {
+      throw new Error('Cannot delete default watchlist');
+    }
+    delete this.watchlists[name];
+    if (this.currentWatchlist === name) {
+      this.currentWatchlist = 'Default';
+      localStorage.setItem('currentWatchlist', 'Default');
+    }
+    this.saveWatchlists();
+  }
+
+  /**
    * Get all films from current watchlist
    * @returns {Array} Array of film objects
    */
@@ -131,6 +148,40 @@ class ListModel {
     this.watchlists[this.currentWatchlist] = this.watchlists[this.currentWatchlist].map((film) => (
       film.id === id ? { ...film, review, rating } : film
     ));
+    this.saveWatchlists();
+  }
+
+  /**
+   * Export a specific watchlist
+   * @param {string} watchlistName - Name of watchlist to export
+   * @returns {Object} Watchlist data including films
+   */
+  exportWatchlist(watchlistName) {
+    return {
+      name: watchlistName,
+      films: this.watchlists[watchlistName] || []
+    };
+  }
+
+  /**
+   * Import a watchlist from data
+   * @param {Object} watchlistData - Watchlist data to import
+   * @throws {Error} If data format is invalid
+   */
+  importWatchlist(watchlistData) {
+    if (!watchlistData.name || !Array.isArray(watchlistData.films)) {
+      throw new Error('Invalid watchlist data format');
+    }
+
+    // Add suffix if watchlist name already exists
+    let { name } = watchlistData;
+    let counter = 1;
+    while (this.watchlists[name]) {
+      name = `${watchlistData.name} (${counter})`;
+      counter += 1;
+    }
+
+    this.watchlists[name] = watchlistData.films;
     this.saveWatchlists();
   }
 
