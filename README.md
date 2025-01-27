@@ -1,40 +1,102 @@
-# Liste2Film
+# Liste2Films 🎬
 
-## Installation
+A modern web application to manage your movie watchlists. Search for movies, create multiple watchlists and track your progress.
 
-Use the package manager [npm](https://www.npmjs.com/) to install this project.
+## ✨ Features
 
-Use node v20 use :
+* **Movie search** through TMDB API to easily find your favorite movies
+* **Multiple custom watchlists** to organize your movies however you want
+* **Rate and review watched movies** to keep track of your impressions
+* **Track movies** watched and to watch so you don't miss anything
+* **Modern dark interface** for a pleasant user experience
+
+## 🚀 Installation
+
+### Prerequisites
+
+* Node.js v20 or higher
+* A TMDB account for API token
+
+### Installing Node.js v20
+
+The recommended way to install Node.js v20 is using nvm (Node Version Manager):
+
+1. First install nvm:
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+```
+
+2. Restart your terminal or reload the configuration:
+```bash
+source ~/.bashrc  # for Linux
+# or
+source ~/.zshrc   # for macOS with zsh
+```
+
+3. Install Node.js v20:
 ```bash
 nvm install 20
 ```
 
+4. Set Node.js v20 as default:
 ```bash
-npm i
+nvm use 20
 ```
 
-## API Usage
+Alternatively, you can install Node.js directly from [Node.js official website](https://nodejs.org/).
 
-Create a .env file in your cloned repo.
+### Installing Dependencies
 
-Put your [TMDB API TOKEN](https://developer.themoviedb.org/docs/getting-started) in it just like what's in the .env.example file.
-
-## Usage
-
-Start the application dev with :
+To install the dependencies:
 
 ```bash
+npm install
+```
+
+## ⚙️ Configuration
+
+1. Create a `.env` file at the project root
+2. Add your TMDB API Token
+
+The `.env` file should contain:
+```
+TMDB_API_TOKEN=your_token_here
+```
+
+## 🛠️ Available Commands
+
+### Development
+
+To run the application in development mode:
+```bash
+npm run dev
+# or
 npm run start
 ```
+The application will be available at http://localhost:9090
 
-Created the dist with :
+### Production
 
+To create an optimized production build:
 ```bash
-npm run dist
+npm run build
 ```
 
-Analyse the coding rules with :
+### Tests and Quality
 
+To check code style compliance:
 ```bash
 npm run lint
 ```
+
+## 🔧 Technologies
+
+* JavaScript ES6+
+* Webpack
+* SCSS
+* TMDB API
+* LocalStorage for persistence
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open an issue or submit a pull request.
