@@ -32,6 +32,7 @@ class LatestMoviesView {
           .card {
             background-color: #485460;
             border: none;
+            color: white;
           }
           .btn-primary {
             background-color: #3c40c6;
@@ -72,6 +73,12 @@ class LatestMoviesView {
           }
           .text-muted {
             color: #adb5bd !important;
+          }
+          .card-title {
+            color: white !important;
+          }
+          .card-text {
+            color: white !important;
           }
         </style>
         <div class="container mt-5">
