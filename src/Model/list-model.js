@@ -142,11 +142,15 @@ class ListModel {
    * Add or update review and rating for a film
    * @param {number} id - ID of film to review
    * @param {string} review - Text review content
-   * @param {number} rating - Numerical rating (0-10)
+   * @param {number|undefined} rating - Numerical rating (0-10) or undefined
    */
   addReview(id, review, rating) {
     this.watchlists[this.currentWatchlist] = this.watchlists[this.currentWatchlist].map((film) => (
-      film.id === id ? { ...film, review, rating } : film
+      film.id === id ? {
+        ...film,
+        review,
+        rating
+      } : film
     ));
     this.saveWatchlists();
   }

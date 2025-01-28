@@ -257,9 +257,9 @@ class ListView {
               <p>${film.description}</p>
               <small>Genre: ${film.genre} | Release Date: ${film.releaseDate}</small>
               <p><strong>Review:</strong> ${film.review || 'No review yet'}</p>
-              <p><strong>Rating:</strong> ${film.rating || 'Not rated yet'}/10</p>
+              <p><strong>Rating:</strong> ${film.rating !== undefined ? film.rating : 'Not rated yet'}/10</p>
               <textarea class="form-control mb-2 review-input" placeholder="Add a review...">${film.review || ''}</textarea>
-              <input type="number" class="form-control mb-2 rating-input" placeholder="Rating out of 10" value="${film.rating || ''}" min="0" max="10">
+              <input type="number" class="form-control mb-2 rating-input" placeholder="Rating out of 10" value="${film.rating !== undefined ? film.rating : ''}" min="0" max="10">
               <button class="btn btn-sm btn-primary save-review-btn">Save Review</button>
             </div>
             <div>
@@ -317,7 +317,8 @@ class ListView {
     this.filmList.querySelectorAll('.save-review-btn').forEach((btn) => btn.addEventListener('click', (e) => {
       const id = parseInt(e.target.closest('.list-group-item').dataset.id, 10);
       const review = e.target.closest('.list-group-item').querySelector('.review-input').value.trim();
-      const rating = parseInt(e.target.closest('.list-group-item').querySelector('.rating-input').value, 10);
+      const ratingInput = e.target.closest('.list-group-item').querySelector('.rating-input').value;
+      const rating = ratingInput === '' ? undefined : parseInt(ratingInput, 10);
       this.onAddReview(id, review, rating);
     }));
   }
