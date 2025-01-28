@@ -2,6 +2,9 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
+const webpack = require('webpack')
+require("dotenv").config({path: './.env'});
+
 module.exports = {
   entry: './src/index.js', // if you unuse typescript entry
   // entry: './src/index.ts',
@@ -60,6 +63,9 @@ module.exports = {
       extensions: ['js', 'ts'],
       exclude: 'node_modules',
       files: './src/'
+    }),
+    new webpack.DefinePlugin({
+      "process.env":JSON.stringify(process.env)
     })
   ]
 };

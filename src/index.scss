@@ -1,5 +1,282 @@
 @charset "utf-8";
 
+// Global styles for the application
+// Sets up the dark theme color scheme
+
+/**
+ * Main body styles
+ * Dark background with light text
+ */
+body {
+  background-color: #1e272e;
+  color: white;
+}
+
+/**
+ * Heading styles
+ * Ensures consistent light coloring
+ */
 h1 {
-  color: green;
+  color: white;
+}
+
+/**
+ * Card component styling
+ * Dark themed cards with no borders
+ */
+.card {
+  background-color: #485460;
+  border: none;
+}
+
+/**
+ * Primary button styling
+ * Blue accent with hover effect
+ */
+.btn-primary {
+  background-color: #3c40c6;
+  border-color: #3c40c6;
+  &:hover {
+    background-color: #575fcf;
+    border-color: #575fcf;
+  }
+}
+
+/**
+ * Secondary button styling
+ * Darker accent with hover effect
+ */
+.btn-secondary {
+  background-color: #485460;
+  border-color: #485460;
+  &:hover {
+    background-color: #1e272e;
+    border-color: #1e272e;
+  }
+}
+
+/**
+ * Form control elements styling
+ * Dark inputs with blue accents
+ */
+.form-control {
+  background-color: #1e272e;
+  border-color: #575fcf;
+  color: white;
+  &:focus {
+    background-color: #1e272e;
+    border-color: #3c40c6;
+    color: white;
+    box-shadow: 0 0 0 0.2rem rgba(60, 64, 198, 0.25);
+  }
+}
+
+/**
+ * Form control placeholder styling
+ * Light text for dark inputs
+ */
+.form-control::placeholder,
+.form-select::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+  opacity: 1;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.form-control::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.form-control:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.form-control::-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/**
+ * Number input specific styling
+ */
+.form-control[type="number"]::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/**
+ * Textarea specific styling
+ */
+textarea.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/**
+ * Modal styling components
+ * Dark themed modal with blue accents
+ */
+.modal-content {
+  background-color: #485460;
+  color: white;
+}
+
+.modal-header {
+  border-bottom: 1px solid #575fcf;
+}
+
+.modal-footer {
+  border-top: 1px solid #575fcf;
+}
+
+/**
+ * Muted text styling
+ * Lighter grey for secondary text
+ */
+.text-muted {
+  color: #adb5bd !important;
+}
+
+/**
+ * Navigation bar styling
+ * Dark themed with blue accents and animations
+ */
+.navbar {
+  background-color: #1e272e !important;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #3c40c6;
+  
+  // Brand/logo styling
+  .navbar-brand {
+    color: #575fcf !important;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: white !important;
+    }
+  }
+
+  // Navigation items container
+  .navbar-nav {
+    margin-left: 2rem;
+    
+    // Individual nav items
+    .nav-item {
+      margin: 0 0.5rem;
+      
+      // Nav links with hover effects
+      .nav-link {
+        color: white !important;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          background-color: #3c40c6;
+          color: white !important;
+          transform: translateY(-2px);
+        }
+        
+        &.active {
+          background-color: #575fcf;
+          color: white !important;
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Responsive navigation toggles
+ * Styled for mobile view
+ */
+.navbar-toggler {
+  border: 2px solid #3c40c6;
+  padding: 0.5rem;
+  
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(60, 64, 198, 0.25);
+  }
+  
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+}
+
+/**
+ * Mobile menu styling
+ * Collapsible navigation for small screens
+ */
+.navbar-collapse {
+  @media (max-width: 991px) {
+    background-color: #1e272e;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+    
+    .nav-item {
+      margin: 0.5rem 0;
+    }
+  }
+}
+
+// Style actif pour l'élément de menu courant
+.nav-item {
+  &.active {
+    .nav-link {
+      background-color: #3c40c6;
+      color: white !important;
+    }
+  }
+}
+
+/**
+ * Select input styling
+ * Dark themed dropdowns
+ */
+.form-select {
+  background-color: #1e272e;
+  border-color: #575fcf;
+  color: white;
+  
+  &:focus {
+    background-color: #1e272e;
+    border-color: #3c40c6;
+    color: white;
+    box-shadow: 0 0 0 0.2rem rgba(60, 64, 198, 0.25);
+  }
+  
+  option {
+    background-color: #1e272e;
+    color: white;
+  }
+}
+
+/**
+ * List group styling
+ * Dark themed list items with blue accents
+ */
+.list-group-item {
+  background-color: #485460;
+  border-color: #575fcf;
+  color: white;
+
+  &.list-group-item-success {
+    background-color: rgba(60, 64, 198, 0.2);
+    color: white;
+  }
+}
+
+// Background color for active navbar items
+.nav-item.active {
+  background-color: #3c40c6;
+}
+
+// Light background overrides
+.bg-light {
+  background-color: #485460 !important;
 }
